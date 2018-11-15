@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolingTower", "CoolingTower\CoolingTower.csproj", "{8EE0E404-3025-4EDA-890C-CECA58CB7DCB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C48E9845-1147-4D31-BC1F-41ECBAC5DD88} = {C48E9845-1147-4D31-BC1F-41ECBAC5DD88}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataPlotter", "DataPlotter\DataPlotter.csproj", "{766B352C-C5F7-43EE-92A5-77A89FDE6655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQDevices", "DAQDevices\DAQDevices.csproj", "{C48E9845-1147-4D31-BC1F-41ECBAC5DD88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,14 @@ Global
 		{8EE0E404-3025-4EDA-890C-CECA58CB7DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE0E404-3025-4EDA-890C-CECA58CB7DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE0E404-3025-4EDA-890C-CECA58CB7DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{766B352C-C5F7-43EE-92A5-77A89FDE6655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{766B352C-C5F7-43EE-92A5-77A89FDE6655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{766B352C-C5F7-43EE-92A5-77A89FDE6655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{766B352C-C5F7-43EE-92A5-77A89FDE6655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C48E9845-1147-4D31-BC1F-41ECBAC5DD88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C48E9845-1147-4D31-BC1F-41ECBAC5DD88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C48E9845-1147-4D31-BC1F-41ECBAC5DD88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C48E9845-1147-4D31-BC1F-41ECBAC5DD88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
