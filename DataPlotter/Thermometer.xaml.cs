@@ -21,19 +21,21 @@ namespace DataPlotter
     public partial class Thermometer : UserControl
     {
         private string title;
+        private string units;
         internal double temperature;
         internal double minRange;
         internal double maxRange;
-        int totalUpdates;
 
         public double Temperature { get => temperature; set { temperature = value; UpdateDrawing(); } }
         public string Title { get => title; set { nameLabel.Text = value; title = value; } }
+        public string Units { get => units; set => units = value; }
 
         public Thermometer()
         {
             InitializeComponent();
             maxRange = 100;
             minRange = 0;
+            units = "";
         }
 
         void UpdateDrawing()
@@ -44,7 +46,7 @@ namespace DataPlotter
                 minRange = temperature;
             double conversionFactor = 130 / (maxRange - minRange);
             ThermoRectangle.Height = conversionFactor * temperature;
-            valueLabel.Text = temperature.ToString() + " °C";
+            valueLabel.Text = temperature.ToString() + units;
             double percent = ThermoRectangle.Height / 130;
             SolidColorBrush b = new SolidColorBrush(MixColors(Colors.Red, Colors.Cyan, percent));
             ThermoRectangle.Fill = b;

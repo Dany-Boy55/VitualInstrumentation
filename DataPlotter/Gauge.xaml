@@ -19,21 +19,24 @@
         <Canvas Grid.Column="0" Width="200">
             <Ellipse  Width="200" Height="200" Stroke="DimGray" StrokeThickness="5">
             </Ellipse>
+            <Path Data="M 36.4,163.6 m 20,20" >
+                <Path.Stroke>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="LimeGreen"/>
+                    </LinearGradientBrush>
+                </Path.Stroke>
+            </Path>
             <Ellipse
                 Width="5" Height="5" Canvas.Top="97.5" Canvas.Left="97.5"
                 Fill="Black"/>
             <Line Name="gaugeIndicator" X1="100" Y1="100" X2="43" Y2="156" Stroke="Black" StrokeThickness="2"></Line>
-            <Label Canvas.Left="130" Content="1000 Kpa" Canvas.Top="150"/>
-            <Label Canvas.Top="150" Canvas.Left="50" Content="0 KPa"/>
+            <Label Name="minLabel" Canvas.Left="130" Canvas.Top="150" Content="1000"/>
+            <Label Name="maxLabel" Canvas.Top="150" Canvas.Left="50" Content="0"/>
         </Canvas>
         <StackPanel Grid.Column="1">
             <TextBlock FontSize="16" Name="nameLabel" Text="Name"/>
             <TextBlock FontSize="14" Text="Value:"/>
             <TextBlock Name="valueLabel"/>
-            <TextBlock FontSize="14" Text="Maximum Registered Value:"/>
-            <TextBlock Name="maxLabel" />
-            <TextBlock FontSize="14" Text="Minimum Registered Value:"/>
-            <TextBlock Name="minLabel" />
         </StackPanel>
     </Grid>
 </UserControl>
