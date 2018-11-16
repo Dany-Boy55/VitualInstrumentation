@@ -102,6 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DAQDevices\DAQDevices.csproj">
+      <Project>{c48e9845-1147-4d31-bc1f-41ecbac5dd88}</Project>
+      <Name>DAQDevices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataPlotter\DataPlotter.csproj">
       <Project>{766b352c-c5f7-43ee-92a5-77a89fde6655}</Project>
       <Name>DataPlotter</Name>

@@ -15,25 +15,57 @@ using System.Windows.Shapes;
 
 namespace DataPlotter
 {
-
     /// <summary>
     /// Interaction logic for Thermometer.xaml
     /// </summary>
     public partial class Thermometer : UserControl
     {
         private string title;
-        internal float temperature;
-        internal float minTemperature;
-        internal float maxTemperature;
+        internal double temperature;
+        internal double minRange;
+        internal double maxRange;
         int totalUpdates;
 
-        public float Temperature { get => temperature; set { temperature = value; totalUpdates++; } }
-        public string Title { get => title; set => title = value; }
+        public double Temperature { get => temperature; set { temperature = value; UpdateDrawing(); } }
+        public string Title { get => title; set { nameLabel.Text = value; title = value; } }
 
         public Thermometer()
         {
             InitializeComponent();
+            maxRange = 100;
+            minRange = 0;
         }
 
+        void UpdateDrawing()
+        {
+            if (temperature > maxRange)
+                maxRange = temperature;
+            if (temperature < minRange)
+                minRange = temperature;
+            double conversionFactor = 130 / (maxRange - minRange);
+            ThermoRectangle.Height = conversionFactor * temperature;
+            valueLabel.Text = temperature.ToString() + " °C";
+            double percent = ThermoRectangle.Height / 130;
+            SolidColorBrush b = new SolidColorBrush(MixColors(Colors.Red, Colors.Cyan, percent));
+            ThermoRectangle.Fill = b;
+            thermoCircle.Fill = b;
+        }
+
+        /// <summary>
+        /// Mix 2 colors with a chomatically acurate method
+        /// </summary>
+        /// <param name="baseColor"></param>
+        /// <param name="addedColor"></param>
+        /// <param name="ratio"></param>
+        /// <returns></returns>
+        Color MixColors(Color baseColor, Color addedColor, double ratio)
+        {
+            byte r, g, b;
+            // Computer colors are represented with a sqrt method, so we do the wheighted RMS
+            r = (byte)Math.Sqrt(baseColor.R * baseColor.R * ratio + addedColor.R * addedColor.R * (1 - ratio));
+            g = (byte)Math.Sqrt(baseColor.G * baseColor.G * ratio + addedColor.G * addedColor.G * (1 - ratio));
+            b = (byte)Math.Sqrt(baseColor.B * baseColor.B * ratio + addedColor.B * addedColor.B * (1 - ratio));
+            return Color.FromRgb(r, g, b);
+        }
     }
 }

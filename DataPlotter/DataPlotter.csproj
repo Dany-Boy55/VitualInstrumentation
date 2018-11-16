@@ -48,6 +48,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gauge.xaml.cs">
+      <DependentUpon>Gauge.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Thermometer.xaml.cs">
       <DependentUpon>Thermometer.xaml</DependentUpon>
     </Compile>
@@ -59,6 +62,10 @@
       <DependentUpon>BasicGraph.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Gauge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Thermometer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

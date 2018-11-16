@@ -40,36 +40,34 @@ namespace CoolingTower
             switch (item.Header.ToString())
             {
                 case "Tiempo Real":
-                    mainPanel.Visibility = Visibility.Visible;
-                    histogramsPanel.Visibility = Visibility.Hidden;
-                    configurationPanel.Visibility = Visibility.Hidden;
-                    aboutPanel.Visibility = Visibility.Hidden;
+                    if (mainPanel.Visibility == Visibility.Visible)
+                        mainPanel.Visibility = Visibility.Collapsed;
+                    else
+                        mainPanel.Visibility = Visibility.Visible;
                     break;
                 case "Histogramas":
-                    mainPanel.Visibility = Visibility.Hidden;
-                    histogramsPanel.Visibility = Visibility.Visible;
-                    configurationPanel.Visibility = Visibility.Hidden;
-                    aboutPanel.Visibility = Visibility.Hidden;
+                    if (histogramsPanel.Visibility == Visibility.Visible)
+                        histogramsPanel.Visibility = Visibility.Collapsed;
+                    else
+                        histogramsPanel.Visibility = Visibility.Visible;
                     break;
                 case "Configuracion":
-                    mainPanel.Visibility = Visibility.Hidden;
-                    histogramsPanel.Visibility = Visibility.Hidden;
-                    configurationPanel.Visibility = Visibility.Visible;
-                    aboutPanel.Visibility = Visibility.Hidden;
-                    IPAddress local = IPAddress.Broadcast;
-                    localiptextbox.Text = "Direccion local " + local.ToString();
+                    if (configurationPanel.Visibility == Visibility.Visible)
+                        configurationPanel.Visibility = Visibility.Collapsed;
+                    else
+                        configurationPanel.Visibility = Visibility.Visible;
                     break;
                 case "Acerca de":
-                    mainPanel.Visibility = Visibility.Hidden;
-                    histogramsPanel.Visibility = Visibility.Hidden;
-                    configurationPanel.Visibility = Visibility.Hidden;
-                    aboutPanel.Visibility = Visibility.Visible;
+                    if (aboutPanel.Visibility == Visibility.Visible)
+                        aboutPanel.Visibility = Visibility.Collapsed;
+                    else
+                        aboutPanel.Visibility = Visibility.Visible;
                     break;
                 default:
-                    mainPanel.Visibility = Visibility.Hidden;
-                    histogramsPanel.Visibility = Visibility.Hidden;
-                    configurationPanel.Visibility = Visibility.Hidden;
-                    aboutPanel.Visibility = Visibility.Hidden;
+                    mainPanel.Visibility = Visibility.Collapsed;
+                    histogramsPanel.Visibility = Visibility.Collapsed;
+                    configurationPanel.Visibility = Visibility.Collapsed;
+                    aboutPanel.Visibility = Visibility.Collapsed;
                     break;
             }
         }

@@ -7,10 +7,10 @@
         xmlns:plot="clr-namespace:DataPlotter;assembly=DataPlotter"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CoolingTower.MainWindow"
         mc:Ignorable="d"
-        Title="Monitoreo Torre de Enfriamiento" Height="450" Width="800">
+        x:Name="asdf"
+        Title="Monitoreo Torre de Enfriamiento" Height="450" Width="Auto">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -21,26 +21,45 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"  FontSize="18">
+        <Menu Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" FontSize="20">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical"/>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="Tiempo Real" Click="MenuItem_Click"/>
-            <MenuItem Header="Histogramas" Click="MenuItem_Click"/>
-            <MenuItem Header="Configuracion" Click="MenuItem_Click"/>
-            <MenuItem Header="Acerca de" Click="MenuItem_Click"/>
+            <MenuItem IsCheckable="True" IsChecked="True" Header="Tiempo Real" Click="MenuItem_Click"/>
+            <MenuItem IsCheckable="True" Header="Histogramas" Click="MenuItem_Click"/>
+            <MenuItem IsCheckable="True" Header="Configuracion" Click="MenuItem_Click"/>
+            <MenuItem IsCheckable="True" Header="Acerca de" Click="MenuItem_Click"/>
         </Menu>
-        <ScrollViewer Grid.Column="1" Grid.Row="0" Visibility="Hidden">
-            <StackPanel x:Name="mainPanel" >
-
+        <ScrollViewer Name="mainPanel" Grid.Column="1" Grid.Row="0"
+                      Visibility="Visible"
+                      VerticalScrollBarVisibility="Visible"
+                      HorizontalScrollBarVisibility="Auto">
+            <StackPanel VerticalAlignment="Top">
+                <plot:Thermometer Name="Temp1" Title="Temperatura de entrada" Temperature="50"/>
+                <plot:Thermometer Name="Temp2" Title="Temperatura de salida" Temperature="50"/>
+                <plot:Gauge Name="press1" Title="Presion del aire"/>
             </StackPanel>
         </ScrollViewer>
-        <ScrollViewer Grid.Column="2" Grid.Row="0" Visibility="Visible" VerticalScrollBarVisibility="Auto" >
-            <StackPanel x:Name="histogramsPanel">
-                <plot:BasicGraph Title="ASDF" XLabel="EjeX" YLabel="EjeY"/>
-                <plot:BasicGraph></plot:BasicGraph>
+        <ScrollViewer Name="histogramsPanel" Grid.Column="2" Grid.Row="0" 
+                      Visibility="Collapsed" 
+                      VerticalScrollBarVisibility="Visible"
+                      HorizontalScrollBarVisibility="Auto">
+            <StackPanel VerticalAlignment="Top"
+                        HorizontalAlignment="Left">
+                <plot:BasicGraph Title="Temperatura de entrada del agua" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
+                <plot:BasicGraph Title="Temepratura de salida del agua" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
+                <plot:BasicGraph Title="Flujo del agua" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
+                <plot:BasicGraph Title="Temepratura de entrada del aire" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
+                <plot:BasicGraph Title="Temepratura de salida del aire" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
+                <plot:BasicGraph Title="Humedad de salida del aire" 
+                                 XLabel="EjeX" YLabel="EjeY"/>
             </StackPanel>
         </ScrollViewer>
         <StackPanel x:Name="configurationPanel" Grid.Column="3" Grid.Row="0" Visibility="Collapsed">
