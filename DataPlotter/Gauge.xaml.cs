@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,34 +26,43 @@ namespace DataPlotter
         internal double _value;
         private double minRange;
         private double maxRange;
+        event EventHandler ValueUpdated;
 
-        public double Value { get => _value; set { _value = value; UpdateDrawing(); } }
+        public double Value { get => _value; set { _value = value;
+                
+                ValueUpdated.Invoke(this, new EventArgs()); } }
         public string Title { get => title; set { nameLabel.Text = value; title = value; } }
         public string Units { get => units; set => units = value; }
-        internal double MinValue { get => minRange; set => minRange = value; }
-        internal double MaxValue { get => maxRange; set => maxRange = value; }
+        public double MinValue { get => minRange; set => minRange = value; }
+        public double MaxValue { get => maxRange; set => maxRange = value; }
 
         public Gauge()
         {
             InitializeComponent();
+            ValueUpdated += Gauge_ValueUpdated;
             minRange = 0;
-            maxRange = 100;
+            maxRange = 1000;
             units = "";
         }
 
-        void UpdateDrawing()
+        private void Gauge_ValueUpdated(object sender, EventArgs e)
         {
             if (_value > maxRange)
-                maxRange = _value;
+                sender.maxRange = _value;
             if (_value < minRange)
                 minRange = _value;
             double conversionFactor = (3 * Math.PI / 2) / (maxRange - minRange);
-            double angle = (5*Math.PI/4) - conversionFactor * _value;
+            double angle = (5 * Math.PI / 4) - conversionFactor * _value;
             valueLabel.Text = _value.ToString() + units;
             minLabel.Content = minRange.ToString() + units;
             maxLabel.Content = maxRange.ToString() + units;
             gaugeIndicator.X2 = 100 + 80 * Math.Cos(angle);
             gaugeIndicator.Y2 = 100 - 80 * Math.Sin(angle);
+        }
+
+        void UpdateDrawing()
+        {
+            
         }
 
     }

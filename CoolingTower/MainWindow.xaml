@@ -64,9 +64,9 @@
         </ScrollViewer>
         <StackPanel x:Name="configurationPanel" Grid.Column="3" Grid.Row="0" Visibility="Collapsed">
             <TextBlock Text="Direccíón IP del dispositivo "/>
-            <TextBox x:Name="ipTextbox"/>
+            <TextBox x:Name="ipTextbox" Text="___.___.___.___"/>
             <TextBlock Text="Puerto del dispositivo"/>
-            <TextBox x:Name="portTextbox"/>
+            <TextBox x:Name="portTextbox" Text="1234" MaxLength="4" MaxLines="1"/>
             <Button Click="ConnectToDevice" Content="Establecer conexión"/>
             <TextBlock><Run Text="Estado"/></TextBlock>
             <ProgressBar Foreground="blue" Value="50" Maximum="100"/>

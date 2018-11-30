@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using DataPlotter;
 using DAQDevices;
 using System.Net;
@@ -24,13 +25,27 @@ namespace CoolingTower
     public partial class MainWindow : Window
     {
         private DAQDevice adquisitionDevice;
+        private Timer updater;
 
         public MainWindow()
         {
             InitializeComponent();
+            updater = new Timer(2000);
+            updater.AutoReset = true;
+            updater.Elapsed += Updater_Elapsed;
+            updater.Start();
+            press1.MaxValue = 1000;
+            press1.MinValue = 0;
             adquisitionDevice = new ESPWiFi(IPAddress.Parse("192.168.0.5"));
         }
 
+        private void Updater_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            Random rand = new Random(Environment.TickCount);
+            int num = rand.Next(1000);
+            press1.Value = num;
+        }
+        
         /// <summary>
         /// Change the content that the user can interact with
         /// </summary>
