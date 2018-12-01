@@ -26,6 +26,7 @@ namespace CoolingTower
     {
         private DAQDevice adquisitionDevice;
         private Timer updater;
+        
 
         public MainWindow()
         {
@@ -43,7 +44,7 @@ namespace CoolingTower
         {
             Random rand = new Random(Environment.TickCount);
             int num = rand.Next(1000);
-            press1.Value = num;
+            //press1.Value = num;
         }
         
         /// <summary>

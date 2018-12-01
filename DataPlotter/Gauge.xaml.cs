@@ -26,11 +26,10 @@ namespace DataPlotter
         internal double _value;
         private double minRange;
         private double maxRange;
-        event EventHandler ValueUpdated;
 
-        public double Value { get => _value; set { _value = value;
-                
-                ValueUpdated.Invoke(this, new EventArgs()); } }
+        public double Value {
+            get => _value;
+            set { _value = value; UpdateDrawing(); } }
         public string Title { get => title; set { nameLabel.Text = value; title = value; } }
         public string Units { get => units; set => units = value; }
         public double MinValue { get => minRange; set => minRange = value; }
@@ -39,16 +38,21 @@ namespace DataPlotter
         public Gauge()
         {
             InitializeComponent();
-            ValueUpdated += Gauge_ValueUpdated;
             minRange = 0;
             maxRange = 1000;
             units = "";
         }
 
-        private void Gauge_ValueUpdated(object sender, EventArgs e)
+        public Gauge(double max, double min)
+        {
+            minRange = min;
+            maxRange = max;
+        }
+
+        void UpdateDrawing()
         {
             if (_value > maxRange)
-                sender.maxRange = _value;
+                maxRange = _value;
             if (_value < minRange)
                 minRange = _value;
             double conversionFactor = (3 * Math.PI / 2) / (maxRange - minRange);
@@ -58,11 +62,6 @@ namespace DataPlotter
             maxLabel.Content = maxRange.ToString() + units;
             gaugeIndicator.X2 = 100 + 80 * Math.Cos(angle);
             gaugeIndicator.Y2 = 100 - 80 * Math.Sin(angle);
-        }
-
-        void UpdateDrawing()
-        {
-            
         }
 
     }

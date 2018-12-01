@@ -26,7 +26,7 @@ namespace DataPlotter
         internal double minRange;
         internal double maxRange;
 
-        public double Temperature { get => temperature; set { temperature = value; UpdateDrawing(); } }
+        public double Value { get => temperature; set { temperature = value; UpdateDrawing(); } }
         public string Title { get => title; set { nameLabel.Text = value; title = value; } }
         public string Units { get => units; set => units = value; }
 

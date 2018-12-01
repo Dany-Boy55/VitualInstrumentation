@@ -9,14 +9,13 @@ namespace DAQDevices
 {
     public class ESPWiFi : DAQDevice
     {
-        private int udpPort;
+        private int port;
         private EventHandler adquistionModeChanged;
         private IPAddress deviceIP;
-        private Socket sender;
-        private UdpClient listener;
+        private TcpClient tcpClient;
         private AdquisitionMode mode;
 
-        public int UdpPort { get => udpPort; set => udpPort = value; }
+        public int UdpPort { get => port; set => port = value; }
         public IPAddress DeviceIP { get => deviceIP; }
         public AdquisitionMode Mode
         {
@@ -39,35 +38,23 @@ namespace DAQDevices
         /// </summary>
         /// <param name="port">Communication port</param>
         /// <param name="adquisition">Adquisition mode: continuous async or on demand</param>
-        public ESPWiFi(IPAddress deviceip, int port = 1234, AdquisitionMode adquisition = AdquisitionMode.OnDemand)
+        public ESPWiFi(IPAddress deviceip, int Port = 1234, AdquisitionMode adquisition = AdquisitionMode.OnDemand)
         {
             deviceIP = deviceip;
             mode = adquisition;
-            udpPort = port;
-            listener = new UdpClient(udpPort);
+            port = Port;
+            tcpClient = new TcpClient();
         }
 
         public override Task<string[]> ReadAllParamsAsync()
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Sends a data request to the remote device
-        /// </summary>
-        /// <returns></returns>
-        private bool SendRequest()
-        {
-            sender = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            byte[] buffer = { 0x25, 0x25, 0x00 };
-            return true;
-        }
-
+        
         public override Task<string> ReadParamAsync(string paramName)
         {
-            string value = "";
-            listener.ReceiveAsync();
-            return Task.Run(() => { return "asdf"; });
+            string mssg = "";
+            return Task.Run(() => { return mssg; });
         }
 
         public override Task SendAsync()

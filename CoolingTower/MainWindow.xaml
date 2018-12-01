@@ -37,9 +37,13 @@
                       VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Auto">
             <StackPanel VerticalAlignment="Top">
-                <plot:Thermometer Name="Temp1" Title="Temperatura de entrada del agua" Temperature="50"/>
-                <plot:Thermometer Name="Temp2" Title="Temperatura de salida del agua" Temperature="50"/>
-                <plot:Gauge Name="press1" Title="Presion del aire"/>
+                <plot:Thermometer Name="Temp1" Title="Temperatura de entrada del agua" Value="50"/>
+                <plot:Thermometer Name="Temp2" Title="Temperatura de salida del agua" Value="50"/>
+                <plot:Gauge Name="press1" Title="Flujo del agua"/>
+                <plot:Thermometer Name="airTemp1" Title="Temperatura de entrada del aire"/>
+                <plot:Thermometer Name="airTemp2" Title="Temperatura de salida del aire"/>
+                <plot:Gauge Name="airHumi1" Title="Humedad de Entrada del Aire"/>
+                <plot:Gauge Name="airHumi2" Title="Humedad de Salida del Aire"/>
             </StackPanel>
         </ScrollViewer>
         <ScrollViewer Name="histogramsPanel" Grid.Column="2" Grid.Row="0" 

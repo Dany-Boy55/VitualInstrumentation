@@ -29,7 +29,7 @@
             <Label Canvas.Bottom="40" Canvas.Left="50" Content="0 °C"/>
         </Canvas>
         <StackPanel Grid.Column="1">
-            <TextBlock FontSize="16" Name="nameLabel" Text="Name"/>
+            <TextBlock FontSize="16" Name="nameLabel" Text="Name" Height="50" TextWrapping="WrapWithOverflow"/>
             <TextBlock FontSize="14" Text="Value:"/>
             <TextBlock Name="valueLabel"/>
             <TextBlock FontSize="14" Text="Maximum Registered Value:"/>
