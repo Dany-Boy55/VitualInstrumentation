@@ -26,7 +26,7 @@ namespace CoolingTower
     {
         private ESPWiFi adquisitionDevice;
         private static IPAddress defaultIp = new IPAddress(new byte[]{192,168,100,100});
-        private double[] variables = new double[7];
+        private double[] variables = new double[8];
         int samples;
 
         public MainWindow()
@@ -40,12 +40,14 @@ namespace CoolingTower
         {
             string[] data = e.data.Split('\n');
             samples++;
+            Console.WriteLine("Read {0} lines", data.Length);
             foreach (string item in data)
             {
                 try
                 {
                     int varIndex = int.Parse(item.Split(',')[0]);
                     variables[varIndex] = double.Parse(item.Split(',')[1]);
+                    Console.WriteLine(item);
                     switch (varIndex)
                     {
                         case 0:
@@ -88,7 +90,6 @@ namespace CoolingTower
                 {
                     
                 }
-                Console.WriteLine(item);
             }
         }
         
@@ -135,15 +136,35 @@ namespace CoolingTower
             Console.WriteLine(MasterWindow.Width);
         }
 
+        /// <summary>
+        /// Establish a tcp connection to the data adquisition device
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConnectToDevice(object sender, RoutedEventArgs e)
         {
             if (!adquisitionDevice.IsConnected)
             {
-                adquisitionDevice.StartConnection();
-                (sender as Button).Content = "Detener Conexion";
+                portTextbox.IsEnabled = false;
+                ipTextbox.IsEnabled = false;
+                try
+                {
+                    IPAddress iP = IPAddress.Parse(ipTextbox.Text);
+                    adquisitionDevice.DeviceIP = iP;
+                    adquisitionDevice.UdpPort = int.Parse(portTextbox.Text);
+                    adquisitionDevice.StartConnection();
+                    (sender as Button).Content = "Detener Conexion";
+                }
+                catch (Exception)
+                {
+                    ipTextbox.Text = defaultIp.ToString();
+                    MessageBox.Show("Direccion IP o puerto TCP no validos");
+                }
             }
             else
             {
+                portTextbox.IsEnabled = true;
+                ipTextbox.IsEnabled = true;
                 adquisitionDevice.StopConnection();
                 (sender as Button).Content = "Establecer Conexion";
             }
@@ -154,6 +175,7 @@ namespace CoolingTower
         /// </summary>
         private void ResetGraphs_Click(object sender, RoutedEventArgs e)
         {
+            samples = 0;
             foreach (var item in graphContainer.Children)
             {
                 (item as BasicGraph).ClearPlot();

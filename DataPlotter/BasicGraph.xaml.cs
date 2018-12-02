@@ -67,8 +67,9 @@ namespace DataPlotter
         public void ClearPlot()
         {
             Plot.Points.Clear();
-            xValues = new List<double>();
-            yValues = new List<double>();
+            xValues = new List<double>() { 0};
+            yValues = new List<double>() { 50};
+            DrawGraph();
         }
 
         /// <summary>

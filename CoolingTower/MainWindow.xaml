@@ -80,9 +80,7 @@
             <TextBox x:Name="portTextbox" Text="23" MaxLength="4" MaxLines="1"/>
             <Button Click="ConnectToDevice" Content="Establecer conexión"/>
             <TextBlock><Run Text="Estado"/></TextBlock>
-            <ProgressBar Foreground="blue" Value="50" Maximum="100"/>
-            <TextBlock Text="Obtener datos cada"/>
-            <TextBox x:Name="refreshTextbox"/>
+            <ProgressBar Name="statusBar" Foreground="red" Value="100" Maximum="100" Height="30"/>
             <TextBlock x:Name="localiptextbox" Text="Dirección IP local"/>
             <Button Content="Borrar Graficas" Click="ResetGraphs_Click"/>
         </StackPanel>
