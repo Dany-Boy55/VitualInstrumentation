@@ -30,13 +30,19 @@
                 Width="5" Height="5" Canvas.Top="97.5" Canvas.Left="97.5"
                 Fill="Black"/>
             <Line Name="gaugeIndicator" X1="100" Y1="100" X2="43" Y2="156" Stroke="Black" StrokeThickness="2"></Line>
-            <Label Name="minLabel" Canvas.Right="45" Canvas.Top="150" Content="100"/>
-            <Label Name="maxLabel" Canvas.Top="150" Canvas.Left="50" Content="0"/>
+            <Label Name="maxRangeLabel" Canvas.Right="45" Canvas.Top="150" Content="100"/>
+            <Label Name="minRangeLabel" Canvas.Top="150" Canvas.Left="50" Content="0"/>
         </Canvas>
         <StackPanel Grid.Column="1">
             <TextBlock FontSize="16" Name="nameLabel" Text="Name" Height="50" TextWrapping="WrapWithOverflow"/>
             <TextBlock FontSize="14" Text="Value:"/>
             <TextBlock Name="valueLabel"/>
+            <TextBlock FontSize="14" Text="Maximum registered value:"/>
+            <TextBlock Name="maxLabel"/>
+            <TextBlock FontSize="14" Text="Minimum registered value:"/>
+            <TextBlock Name="minLabel"/>
+            <TextBlock FontSize="14" Text="Average value:"/>
+            <TextBlock Name="avgLabel"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -23,7 +23,6 @@ namespace DataPlotter
 
         private List<double> xValues;
         private List<double> yValues;
-        private Color foreColor;
         private string xLabel;
         private string yLabel;
         private string title;
@@ -44,13 +43,14 @@ namespace DataPlotter
         public string XLabel { get => xLabel; set {xLabel = value; xAxisLabel.Text = value; } }
         public string YLabel { get => yLabel; set { yLabel = value; yAxisLabel.Text = value; } }
         public string Title { get => title; set { title = value; titleLabel.Text = value; } }
+        public Color foreColor { get; set; }
 
         /// <summary>
         /// Adds a new data point to the graph 
         /// </summary>
         /// <param name="x">Value of the independant variable</param>
         /// <param name="y">Value of the dependent variable</param>
-        public void AddNewDataPoint(float x, float y)
+        public void AddNewDataPoint(double x, double y)
         {
             if (xValues == null)
                 xValues = new List<double>();
@@ -58,6 +58,7 @@ namespace DataPlotter
                 yValues = new List<double>();
             xValues.Add(x);
             yValues.Add(y);
+            DrawGraph();
         }
 
         /// <summary>
@@ -85,21 +86,21 @@ namespace DataPlotter
             if (MainCanvas.Width == 0)
                 w = 400;
             else
-                w = MainCanvas.Width;
+                w = MainCanvas.Width - 40;
             if (MainCanvas.Height == 0)
                 h = 200;
             else
-                h = MainCanvas.Height;
+                h = MainCanvas.Height - 40;
             // Calculate scaling factors so the given values can fit within the graph area
-            double xDrawFactor = (w) / (xValues.Max());
-            double yDrawFactor = (h) / (yValues.Max());
+            double xDrawFactor = (w) / (xValues.Max() - xValues.Min());
+            double yDrawFactor = (h) / (yValues.Max() - YValues.Min());
             // Clear the existing plot
             Plot.Points.Clear();
             // Draw all the points in the polyline
             for (int i = 0; i < xValues.Count; i++)
             {
-                int tempx = (int)(xValues.ElementAt(i) * xDrawFactor) + 10;
-                int tempy = (int)(h - yValues.ElementAt(i) * yDrawFactor);
+                int tempx = (int)(xValues.ElementAt(i) * xDrawFactor) + 20;
+                int tempy = (int)(h + 20 - yValues.ElementAt(i) * yDrawFactor);
                 Plot.Points.Add(new Point(tempx, tempy));
             }
             // Success

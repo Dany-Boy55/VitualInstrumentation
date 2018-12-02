@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataPlotter"
-             Height="220" Width="420" Margin="8">
+             Height="240" Width="440" Margin="8">
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Auto Scale" IsCheckable="True" IsChecked="True" Click="MenuItem_Click"></MenuItem>
@@ -16,22 +16,25 @@
         <Canvas Name="MainCanvas"
                 Width="{Binding ActualWidth, ElementName=userControl, Mode=OneWay}" 
                 Height="{Binding ActualHeight, ElementName=userControl, Mode=OneWay}">
-            <TextBlock Name="titleLabel" Text="GraphName" Canvas.Right="0"/>
-            <TextBlock Name="xAxisLabel" Text="X Axis" Canvas.Bottom="0" Canvas.Right="0"/>
-            <TextBlock Name="yAxisLabel" Text="Y Axis" />
+            <TextBlock Name="titleLabel" Text="GraphName" Canvas.Right="5"/>
+            <TextBlock Name="xAxisLabel" Text="X Axis" Canvas.Bottom="0" Canvas.Right="5"/>
+            <TextBlock Name="yAxisLabel" Text="Y Axis" Canvas.Left="5" />
+            <Rectangle 
+                Stroke="Gray"
+                Width="{Binding ActualWidth, ElementName=userControl, Mode=OneWay}" 
+                Height="{Binding ActualHeight, ElementName=userControl, Mode=OneWay}"/>
             <Line Name="xAxis" 
                   Stroke="SlateGray"
-                  X1="10" X2="410"
-                  Y1="210" Y2="210"/>
+                  X1="20" Y1="220"
+                  X2="420" Y2="220"/>
             <Line Name="yAxis"
                   Stroke="SlateGray"
-                  X1="10" X2="10"
-                  Y1="10" Y2="210">
-            </Line>
+                  X1="20" Y1="20"
+                  X2="20" Y2="220"/>
             <Polyline Name="Plot" Stroke="DeepSkyBlue">
                 <Polyline.Points>
-                    <Point X="10" Y="10"/>
-                    <Point X="410" Y="210"/>
+                    <Point X="20" Y="20"/>
+                    <Point X="420" Y="220"/>
                 </Polyline.Points>
             </Polyline>
         </Canvas>

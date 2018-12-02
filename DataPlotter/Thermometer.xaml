@@ -36,6 +36,8 @@
             <TextBlock Name="maxLabel" />
             <TextBlock FontSize="14" Text="Minimum Registered Value:"/>
             <TextBlock Name="minLabel" />
+            <TextBlock FontSize="14" x:Name="textBlock" Text="Average Value:"/>
+            <TextBlock x:Name="avgLabel"/>
         </StackPanel>
     </Grid>
 </UserControl>

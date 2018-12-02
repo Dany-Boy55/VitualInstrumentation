@@ -23,8 +23,8 @@ namespace DataPlotter
         private string title;
         private string units;
         internal double temperature;
-        internal double minRange;
-        internal double maxRange;
+        internal double minval, maxval, minRange, maxRange, avgval;
+
 
         public double Value { get => temperature; set { temperature = value; UpdateDrawing(); } }
         public string Title { get => title; set { nameLabel.Text = value; title = value; } }
@@ -35,7 +35,9 @@ namespace DataPlotter
             InitializeComponent();
             maxRange = 100;
             minRange = 0;
-            units = "";
+            minval = double.MaxValue;
+            maxval = double.MinValue;
+            units = "°C";
         }
 
         void UpdateDrawing()
@@ -44,6 +46,18 @@ namespace DataPlotter
                 maxRange = temperature;
             if (temperature < minRange)
                 minRange = temperature;
+            if (temperature > maxval)
+            {
+                maxval = temperature;
+                maxLabel.Text = maxval.ToString() + units;
+            }
+            if (temperature < minval)
+            {
+                minval = temperature;
+                minLabel.Text = minval.ToString() + units;
+            }
+            avgval = (avgval + temperature) /2;
+            avgLabel.Text = avgval.ToString() + units;
             double conversionFactor = 130 / (maxRange - minRange);
             ThermoRectangle.Height = conversionFactor * temperature;
             valueLabel.Text = temperature.ToString() + units;

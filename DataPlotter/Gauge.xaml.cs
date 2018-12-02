@@ -26,6 +26,7 @@ namespace DataPlotter
         internal double _value;
         private double minRange;
         private double maxRange;
+        private double maxval, minval, avgval;
 
         public double Value {
             get => _value;
@@ -39,27 +40,41 @@ namespace DataPlotter
         {
             InitializeComponent();
             minRange = 0;
-            maxRange = 1000;
-            units = "";
-        }
-
-        public Gauge(double max, double min)
-        {
-            minRange = min;
-            maxRange = max;
+            maxRange = 100;
+            minval = double.MaxValue;
+            maxval = double.MinValue;
         }
 
         void UpdateDrawing()
         {
+            // update the minimums and maximums in case a new values falls outside current boundries
             if (_value > maxRange)
+            {
                 maxRange = _value;
+                maxRangeLabel.Content = maxRange.ToString() + units;
+            }
             if (_value < minRange)
+            {
                 minRange = _value;
+                minRangeLabel.Content = minRange.ToString() + units;
+            }
+            if (_value > maxval)
+            {
+                maxval = _value;
+                maxLabel.Text = maxval.ToString() + units;
+            }
+            if (_value < minval)
+            {
+                minval = _value;
+                minLabel.Text = minval.ToString() + units;
+            }
+            // Update the control drawing programatically (later will be done with bindings and converters)
+            avgval = (avgval + _value) / 2;
+            avgLabel.Text = avgval.ToString() + units;
+            // Perform the calculations for the positions of the drawing elements
             double conversionFactor = (3 * Math.PI / 2) / (maxRange - minRange);
             double angle = (5 * Math.PI / 4) - conversionFactor * _value;
             valueLabel.Text = _value.ToString() + units;
-            minLabel.Content = minRange.ToString() + units;
-            maxLabel.Content = maxRange.ToString() + units;
             gaugeIndicator.X2 = 100 + 80 * Math.Cos(angle);
             gaugeIndicator.Y2 = 100 - 80 * Math.Sin(angle);
         }

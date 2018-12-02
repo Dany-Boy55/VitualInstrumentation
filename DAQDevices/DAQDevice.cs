@@ -8,9 +8,9 @@ namespace DAQDevices
 {
     public abstract class DAQDevice
     {
-        public abstract Task SendAsync();
-        public abstract Task<string> ReadParamAsync(string paramName);
-        public abstract Task<string[]> ReadAllParamsAsync();
+        // Methods common to all the data adquisition inherited classes
+        public abstract void StartConnection();
+        public abstract void StopConnection();
 
         /// <summary>
         /// CRC8 method for checking data integriy

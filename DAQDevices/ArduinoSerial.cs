@@ -50,17 +50,12 @@ namespace DAQDevices
             }
         }
 
-        public override Task<string[]> ReadAllParamsAsync()
+        public override void StartConnection()
         {
             throw new NotImplementedException();
         }
 
-        public override Task<string> ReadParamAsync(string paramName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task SendAsync()
+        public override void StopConnection()
         {
             throw new NotImplementedException();
         }

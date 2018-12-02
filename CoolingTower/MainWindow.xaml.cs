@@ -24,28 +24,74 @@ namespace CoolingTower
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DAQDevice adquisitionDevice;
-        private Timer updater;
-        
+        private ESPWiFi adquisitionDevice;
+        private static IPAddress defaultIp = new IPAddress(new byte[]{192,168,100,100});
+        private double[] variables = new double[7];
+        int samples;
 
         public MainWindow()
         {
             InitializeComponent();
-            updater = new Timer(2000);
-            updater.AutoReset = true;
-            updater.Elapsed += Updater_Elapsed;
-            updater.Start();
-            press1.MaxValue = 1000;
-            press1.MinValue = 0;
-            adquisitionDevice = new ESPWiFi(IPAddress.Parse("192.168.0.5"));
+            adquisitionDevice = new ESPWiFi(IPAddress.Parse("192.168.100.2"));
+            adquisitionDevice.dataAvaileable += AdquisitionDevice_dataAvaileable;
         }
 
-        private void Updater_Elapsed(object sender, ElapsedEventArgs e)
+        private void AdquisitionDevice_dataAvaileable(object sender, DAQDataArgs e)
         {
-            Random rand = new Random(Environment.TickCount);
-            int num = rand.Next(1000);
-            //press1.Value = num;
+            string[] data = e.data.Split('\n');
+            samples++;
+            foreach (string item in data)
+            {
+                try
+                {
+                    int varIndex = int.Parse(item.Split(',')[0]);
+                    variables[varIndex] = double.Parse(item.Split(',')[1]);
+                    switch (varIndex)
+                    {
+                        case 0:
+                            temp1graph.AddNewDataPoint(samples, variables[0]);
+                            Temp1.Value = variables[0];
+                            break;
+                        case 1:
+                            Temp2.Value = variables[1];
+                            temp2graph.AddNewDataPoint(samples, variables[1]);
+                            break;
+                        case 2:
+                            flow1.Value = variables[2];
+                            flowgraph.AddNewDataPoint(samples, variables[2]);
+                            break;
+                        case 3:
+                            airTemp1.Value = variables[3];
+                            airtemp1graph.AddNewDataPoint(samples, variables[3]);
+                            break;
+                        case 4:
+                            airTemp2.Value = variables[4];
+                            airtemp2graph.AddNewDataPoint(samples, variables[4]);
+                            break;
+                        case 5:
+                            airHumi1.Value = variables[5];
+                            humi1graph.AddNewDataPoint(samples, variables[5]);
+                            break;
+                        case 6:
+                            airHumi2.Value = variables[6];
+                            humi2graph.AddNewDataPoint(samples, variables[6]);
+                            break;
+                        case 7:
+                            press.Value = variables[7];
+                            pressgraph.AddNewDataPoint(samples, variables[7]);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                }
+                Console.WriteLine(item);
+            }
         }
+        
         
         /// <summary>
         /// Change the content that the user can interact with
@@ -86,11 +132,32 @@ namespace CoolingTower
                     aboutPanel.Visibility = Visibility.Collapsed;
                     break;
             }
+            Console.WriteLine(MasterWindow.Width);
         }
 
         private void ConnectToDevice(object sender, RoutedEventArgs e)
         {
-            
+            if (!adquisitionDevice.IsConnected)
+            {
+                adquisitionDevice.StartConnection();
+                (sender as Button).Content = "Detener Conexion";
+            }
+            else
+            {
+                adquisitionDevice.StopConnection();
+                (sender as Button).Content = "Establecer Conexion";
+            }
+        }
+
+        /// <summary>
+        /// Errases all the content in the plots
+        /// </summary>
+        private void ResetGraphs_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in graphContainer.Children)
+            {
+                (item as BasicGraph).ClearPlot();
+            }
         }
     }
 }
