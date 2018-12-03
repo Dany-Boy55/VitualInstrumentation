@@ -80,8 +80,10 @@
             <TextBox x:Name="portTextbox" Text="23" MaxLength="4" MaxLines="1"/>
             <Button Click="ConnectToDevice" Content="Establecer conexión"/>
             <TextBlock><Run Text="Estado"/></TextBlock>
-            <ProgressBar Name="statusBar" Foreground="red" Value="100" Maximum="100" Height="30"/>
-            <TextBlock x:Name="localiptextbox" Text="Dirección IP local"/>
+            <Grid Margin="10">
+                <ProgressBar Foreground="Red" Height="50" Maximum="100" Value="100" Name="statusBar" />
+                <TextBlock Name="statusText" Text="Desconectado" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
             <Button Content="Borrar Graficas" Click="ResetGraphs_Click"/>
         </StackPanel>
         <StackPanel x:Name="aboutPanel" Grid.Column="4" Grid.Row="0" Visibility="Collapsed">

@@ -23,6 +23,7 @@ namespace DataPlotter
 
         private List<double> xValues;
         private List<double> yValues;
+        private double xminval, xmaxval, yminval, ymaxval;
         private string xLabel;
         private string yLabel;
         private string title;
@@ -35,6 +36,10 @@ namespace DataPlotter
             InitializeComponent();
             xValues = new List<double>();
             yValues = new List<double>();
+            xminval = 0;
+            xmaxval = 100;
+            yminval = 0;
+            ymaxval = 100;
             DrawGraph();
         }
         
@@ -56,6 +61,14 @@ namespace DataPlotter
                 xValues = new List<double>();
             if (yValues == null)
                 yValues = new List<double>();
+            if (x < xminval)
+                xminval = x;
+            if (x > xmaxval)
+                xmaxval = x;
+            if (y < yminval)
+                yminval = y;
+            if (y > ymaxval)
+                ymaxval = y;
             xValues.Add(x);
             yValues.Add(y);
             DrawGraph();
@@ -93,8 +106,8 @@ namespace DataPlotter
             else
                 h = MainCanvas.Height - 40;
             // Calculate scaling factors so the given values can fit within the graph area
-            double xDrawFactor = (w) / (xValues.Max() - xValues.Min());
-            double yDrawFactor = (h) / (yValues.Max() - YValues.Min());
+            double xDrawFactor = (w) / (xmaxval - xminval);
+            double yDrawFactor = (h) / (ymaxval - yminval);
             // Clear the existing plot
             Plot.Points.Clear();
             // Draw all the points in the polyline

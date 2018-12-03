@@ -36,8 +36,13 @@ namespace CoolingTower
             adquisitionDevice.dataAvaileable += AdquisitionDevice_dataAvaileable;
         }
 
+        /// <summary>
+        /// When there is new data from the adquisition device, show it in the UI
+        /// </summary>
         private void AdquisitionDevice_dataAvaileable(object sender, DAQDataArgs e)
         {
+            statusBar.Foreground = new SolidColorBrush(Colors.LimeGreen);
+            statusText.Text = "Conectado: Recibiendo datos";
             string[] data = e.data.Split('\n');
             samples++;
             Console.WriteLine("Read {0} lines", data.Length);
@@ -145,20 +150,27 @@ namespace CoolingTower
         {
             if (!adquisitionDevice.IsConnected)
             {
-                portTextbox.IsEnabled = false;
-                ipTextbox.IsEnabled = false;
                 try
                 {
                     IPAddress iP = IPAddress.Parse(ipTextbox.Text);
                     adquisitionDevice.DeviceIP = iP;
-                    adquisitionDevice.UdpPort = int.Parse(portTextbox.Text);
+                    adquisitionDevice.Port = int.Parse(portTextbox.Text);
                     adquisitionDevice.StartConnection();
+                    portTextbox.IsEnabled = false;
+                    ipTextbox.IsEnabled = false;
+                    statusBar.Foreground = new SolidColorBrush(Colors.DodgerBlue);
+                    statusText.Text = "Conectado: Sin Datos";
                     (sender as Button).Content = "Detener Conexion";
                 }
-                catch (Exception)
+                catch (FormatException)
                 {
                     ipTextbox.Text = defaultIp.ToString();
+                    portTextbox.Text = "23";
                     MessageBox.Show("Direccion IP o puerto TCP no validos");
+                }
+                catch (InvalidOperationException)
+                {
+                    MessageBox.Show("Error al abrir la conexion TCP espeficicada");
                 }
             }
             else
@@ -166,6 +178,8 @@ namespace CoolingTower
                 portTextbox.IsEnabled = true;
                 ipTextbox.IsEnabled = true;
                 adquisitionDevice.StopConnection();
+                statusBar.Foreground = new SolidColorBrush(Colors.Red);
+                statusText.Text = "Desconectado";
                 (sender as Button).Content = "Establecer Conexion";
             }
         }

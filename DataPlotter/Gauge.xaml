@@ -18,11 +18,15 @@
         </Grid.RowDefinitions>
         <Canvas Grid.Column="0" Width="200">
             <Ellipse Canvas.Top="10" Canvas.Left="10" Width="180" Height="180" Stroke="DimGray" StrokeThickness="5">
-            </Ellipse>
-            <Path Data="M 36.4,163.6 m 20,20" >
+            </Ellipse>            
+            <Path Data="M 40,150 A 80 78 0 1 1 160,150" StrokeThickness="4">
                 <Path.Stroke>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="LimeGreen"/>
+                    <LinearGradientBrush  StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="Cyan" Offset="0.1"/>
+                        <GradientStop Color="LimeGreen" Offset="0.2"/>
+                        <GradientStop Color="Yellow" Offset="0.5"/>
+                        <GradientStop Color="Orange" Offset="0.75"/>
+                        <GradientStop Color="Red" Offset="1"/>
                     </LinearGradientBrush>
                 </Path.Stroke>
             </Path>
