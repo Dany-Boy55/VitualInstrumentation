@@ -7,8 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300"
              MinHeight="200" MinWidth="400"
-             Height="Auto" Width="Auto">
-    <Grid>
+             Height="Auto" Width="Auto"
+             Margin="20">
+    <Grid>        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -38,7 +39,7 @@
             <Label Name="minRangeLabel" Canvas.Top="150" Canvas.Left="50" Content="0"/>
         </Canvas>
         <StackPanel Grid.Column="1">
-            <TextBlock FontSize="16" Name="nameLabel" Text="Name" Height="50" TextWrapping="WrapWithOverflow"/>
+            <TextBlock FontSize="16" FontWeight="Bold" Name="nameLabel" Text="Name" TextWrapping="WrapWithOverflow"/>
             <TextBlock FontSize="14" Text="Value:"/>
             <TextBlock Name="valueLabel"/>
             <TextBlock FontSize="14" Text="Maximum registered value:"/>

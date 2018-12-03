@@ -155,9 +155,14 @@ namespace CoolingTower
                     IPAddress iP = IPAddress.Parse(ipTextbox.Text);
                     adquisitionDevice.DeviceIP = iP;
                     adquisitionDevice.Port = int.Parse(portTextbox.Text);
-                    adquisitionDevice.StartConnection();
+                    this.Cursor = Cursors.Wait;
+                    statusText.Text = "Conectando...";
                     portTextbox.IsEnabled = false;
                     ipTextbox.IsEnabled = false;
+                    statusBar.Foreground = new SolidColorBrush(Colors.Yellow);
+                    adquisitionDevice.StartConnection();
+                    while(!adquisitionDevice.IsConnected){ }
+                    this.Cursor = null;
                     statusBar.Foreground = new SolidColorBrush(Colors.DodgerBlue);
                     statusText.Text = "Conectado: Sin Datos";
                     (sender as Button).Content = "Detener Conexion";

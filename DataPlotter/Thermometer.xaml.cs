@@ -24,6 +24,7 @@ namespace DataPlotter
         private string units;
         internal double temperature;
         internal double minval, maxval, minRange, maxRange, avgval;
+        LinearGradientBrush linGradient;
 
 
         public double Value { get => temperature; set { temperature = value; UpdateDrawing(); } }
@@ -38,6 +39,7 @@ namespace DataPlotter
             minval = double.MaxValue;
             maxval = double.MinValue;
             units = "°C";
+            linGradient = new LinearGradientBrush();
         }
 
         void UpdateDrawing()
@@ -62,19 +64,20 @@ namespace DataPlotter
             ThermoRectangle.Height = conversionFactor * temperature;
             valueLabel.Text = temperature.ToString() + units;
             double percent = ThermoRectangle.Height / 130;
-            SolidColorBrush b = new SolidColorBrush(MixColors(Colors.Red, Colors.Cyan, percent));
+            SolidColorBrush b = new SolidColorBrush(MixColors(Colors.Red, Colors.Blue,percent));
             ThermoRectangle.Fill = b;
             thermoCircle.Fill = b;
         }
+        
 
         /// <summary>
-        /// Mix 2 colors with a chomatically acurate method
+        /// Average 2 colors with RMS
         /// </summary>
         /// <param name="baseColor"></param>
         /// <param name="addedColor"></param>
         /// <param name="ratio"></param>
         /// <returns></returns>
-        Color MixColors(Color baseColor, Color addedColor, double ratio)
+        static Color MixColors(Color baseColor, Color addedColor, double ratio)
         {
             byte r, g, b;
             // Computer colors are represented with a sqrt method, so we do the wheighted RMS
@@ -83,5 +86,6 @@ namespace DataPlotter
             b = (byte)Math.Sqrt(baseColor.B * baseColor.B * ratio + addedColor.B * addedColor.B * (1 - ratio));
             return Color.FromRgb(r, g, b);
         }
+        
     }
 }

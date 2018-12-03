@@ -12,6 +12,7 @@ namespace DAQDevices
     {
         // Private fields and objects
         private int port;
+        private bool isConnected;
         private IPAddress deviceIpAddress;
         private TcpClient tcpClient;
         private CancellationTokenSource cancellation;
@@ -33,6 +34,7 @@ namespace DAQDevices
             deviceIpAddress = deviceip;
             port = Port;
             tcpClient = new TcpClient();
+            isConnected = false;
             if (connect)
                 StartConnection();
         }
@@ -75,6 +77,7 @@ namespace DAQDevices
             {
                 // Cancel the asynchronous data checking task via a token and close the tcp connection
                 cancellation.Cancel();
+                isConnected = false;
                 tcpClient.Close();
                 tcpClient = new TcpClient();
             }
@@ -143,7 +146,9 @@ namespace DAQDevices
             // Create the necesary objects once, run the loop until cancelled
             DAQDataArgs args = new DAQDataArgs();
             NetworkStream stream = client.GetStream();
+            Console.WriteLine("Checking for data");
             // Run forever (until cancelled)
+            await Task.Delay(1000);
             while (true)
             {
                 if (can.IsCancellationRequested)
@@ -152,20 +157,21 @@ namespace DAQDevices
                     stream.Dispose();
                     break;
                 }
-                //Console.WriteLine("Checking for data");
+                Console.WriteLine("Checking for data");
                 //Console.WriteLine("buffer {0}", client.Available);
-                if (client.Available > 0)
-                {
-                    int leng = client.Available;
-                    byte[] buff = new byte[leng];
-                    stream.Read(buff, 0, leng);
-                    args.bufferSize = leng;
-                    args.data = Encoding.ASCII.GetString(buff);
-                    //Console.WriteLine("data: " + args.data);
-                    callback(this, args);
-                 
-                }                
-                await Task.Delay(200);
+                if(IsConnected)
+                    if (client.Available > 0)
+                    {
+                        int leng = client.Available;
+                        byte[] buff = new byte[leng];
+                        stream.Read(buff, 0, leng);
+                        args.bufferSize = leng;
+                        args.data = Encoding.ASCII.GetString(buff);
+                        //Console.WriteLine("data: " + args.data);
+                        callback(this, args);
+                    }
+
+                await Task.Delay(100);
             }
         }
     }

@@ -33,6 +33,9 @@
             <MenuItem IsCheckable="True" Header="Histogramas" Click="MenuItem_Click"/>
             <MenuItem IsCheckable="True" Header="Configuracion" Click="MenuItem_Click"/>
             <MenuItem IsCheckable="True" Header="Acerca de" Click="MenuItem_Click"/>
+            <MenuItem VerticalAlignment="Bottom">
+                <Image Source="/logoitesm.png" Name="logoImage"/>
+            </MenuItem>
         </Menu>
         <ScrollViewer Name="mainPanel" Grid.Column="1" Grid.Row="0"
                       Visibility="Visible"
