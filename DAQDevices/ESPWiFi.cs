@@ -56,15 +56,23 @@ namespace DAQDevices
         public void StartConnection()
         {
             if (!IsConnected)
-            {                
-                tcpClient = new TcpClient();
-                // Connecto to the tcp server
-                tcpClient.Connect(deviceIpAddress, port);
-                // Instantiate a callback to trigger an event when there is data
-                EventHandler<DAQDataArgs> handler = dataAvaileable;
-                cancellation = new CancellationTokenSource();
-                // Fire up the asynchronous data checking task with all its parameters
-                CheckData(tcpClient, handler, cancellation.Token);
+            {
+                try
+                {
+                    tcpClient = new TcpClient();
+                    // Connecto to the tcp server
+                    tcpClient.Connect(deviceIpAddress, port);
+                    
+                    // Instantiate a callback to trigger an event when there is data
+                    EventHandler<DAQDataArgs> handler = dataAvaileable;
+                    cancellation = new CancellationTokenSource();
+                    // Fire up the asynchronous data checking task with all its parameters
+                    CheckData(tcpClient, handler, cancellation.Token);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         }
 
@@ -159,7 +167,7 @@ namespace DAQDevices
                 }
                 Console.WriteLine("Checking for data");
                 //Console.WriteLine("buffer {0}", client.Available);
-                if(IsConnected)
+                if(tcpClient.Connected)
                     if (client.Available > 0)
                     {
                         int leng = client.Available;

@@ -8,9 +8,9 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CoolingTower.MainWindow"
         mc:Ignorable="d"
         x:Name="MasterWindow"
-        MinWidth="570"
+        MinWidth="630"
         MinHeight="500"
-        Title="Monitoreo Torre de Enfriamiento" Height="800" Width="585">
+        Title="Monitoreo Torre de Enfriamiento" Height="800" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -50,6 +50,8 @@
                 <plot:Gauge Name="airHumi1" Title="Humedad de Entrada del Aire" Units="%"/>
                 <plot:Gauge Name="airHumi2" Title="Humedad de Salida del Aire" Units="%"/>
                 <plot:Gauge Name="press" Title="Presion Atmosferica" Units="Atm"/>
+                <plot:Gauge Name="airflowgauge" Title="Flujo másico del aire" Units="Kg/s"/>
+                <plot:Gauge Name="qlostgauge" Title="Calor disipado del agua" Units="KJ/s"/>
             </StackPanel>
         </ScrollViewer>
         <ScrollViewer Name="histogramsPanel" Grid.Column="2" Grid.Row="0" 
@@ -74,9 +76,14 @@
                                  XLabel="Tiempo" YLabel="porcentaje" Name="humi2graph"/>
                 <plot:BasicGraph Title="Presion atmosferica" 
                                  XLabel="Tiempo" YLabel="Kpa" Name="pressgraph"/>
+                <plot:BasicGraph Title="Presion atmosferica" 
+                                 XLabel="Tiempo" YLabel="Kg/s" Name="airflowGraph"/>
+                <plot:BasicGraph Title="Calor disipado del agua" 
+                                 XLabel="Tiempo" YLabel="KJ/s" Name="qlostGraph"/>
             </StackPanel>
         </ScrollViewer>
         <StackPanel x:Name="configurationPanel" Grid.Column="3" Grid.Row="0" Visibility="Collapsed">
+            <Label Content="Conexión" FontSize="16" FontWeight="Bold"/>
             <TextBlock Text="Direccíón IP del dispositivo "/>
             <TextBox x:Name="ipTextbox" Text="192.168.100.2"/>
             <TextBlock Text="Puerto del dispositivo"/>
@@ -85,13 +92,33 @@
             <TextBlock><Run Text="Estado"/></TextBlock>
             <Grid Margin="10">
                 <ProgressBar Foreground="Red" Height="50" Maximum="100" Value="100" Name="statusBar" />
-                <TextBlock Name="statusText" Text="Desconectado" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock FontSize="16" Name="statusText" Text="Desconectado" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
             <Button Content="Borrar Graficas" Click="ResetGraphs_Click"/>
+            <Grid Margin="20"/>
+            <Label FontSize="16" FontWeight="Bold" Content="Proceso"/>
+            <Label Content="Flujo másico del aire (l/min)"/>
+            <TextBox Name="airFlow" Text="500" TextChanged="airFlow_TextChanged"/>
+            <Label Content="Area transversal (m^3)"/>
+            <TextBox Name="airArea" Text="0.5" TextChanged="airArea_TextChanged"/>
+            <Label Content="Rsust del Aire (KJ/KG K)"/>
+            <TextBox Name="airRsust" Text="0.2870" TextChanged="airRsust_TextChanged"/>
+            <Label Content="Calor especifico del Aire (KJ/KG K)"/>
+            <TextBox Name="airCp" Text="1.005" TextChanged="airCp_TextChanged"/>
         </StackPanel>
-        <StackPanel x:Name="aboutPanel" Grid.Column="4" Grid.Row="0" Visibility="Collapsed">
-            <TextBlock FontSize="20"><Run Text="Acerca de este sistema:"/></TextBlock>
-            <TextBlock><Run Text="Este es un sistema de monitoreo de variables de una torre de enfriamiento."/></TextBlock>
+        <StackPanel x:Name="aboutPanel" Grid.Column="4" Grid.Row="0" Visibility="Collapsed" MaxWidth="300">
+            <TextBlock FontSize="18" FontWeight="Bold"><Run Text="Acerca de este sistema:"/></TextBlock>
+            <TextBlock TextWrapping="Wrap" FontSize="16">
+                <TextBlock.Text>
+                    Este es un sistema de instrumentación de monitoreo remoto 
+                    para una torre de Enfriamiento. Para poder usar el sistema 
+                    es necesario configurar la computadora como hotspot de WiFi.
+                    Configuración --> Red e internet --> Zona de cobertura movil (hostspot)
+                    Activar el hostspot con nombre [wifitermo] y contraseña [1234admin]
+                    Mantener la ventana abierta y encender el sistema de instrumentación.
+                    Al establecer una conexion, usar la dirección IP que aparece en pantalla
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </Window>

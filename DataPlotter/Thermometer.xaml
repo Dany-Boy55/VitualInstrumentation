@@ -31,13 +31,13 @@
         </Canvas>
         <StackPanel Grid.Column="1">
             <TextBlock FontSize="16" FontWeight="Bold" Name="nameLabel" Text="Name" TextWrapping="WrapWithOverflow"/>
-            <TextBlock FontSize="14" Text="Value:"/>
+            <TextBlock FontSize="14" FontWeight="Bold" Text="Value:"/>
             <TextBlock Name="valueLabel"/>
-            <TextBlock FontSize="14" Text="Maximum Registered Value:"/>
+            <TextBlock FontSize="14" FontWeight="Bold" Text="Maximum Registered Value:"/>
             <TextBlock Name="maxLabel" />
-            <TextBlock FontSize="14" Text="Minimum Registered Value:"/>
+            <TextBlock FontSize="14" FontWeight="Bold" Text="Minimum Registered Value:"/>
             <TextBlock Name="minLabel" />
-            <TextBlock FontSize="14" x:Name="textBlock" Text="Average Value:"/>
+            <TextBlock FontSize="14" FontWeight="Bold" x:Name="textBlock" Text="Average Value:"/>
             <TextBlock x:Name="avgLabel"/>
         </StackPanel>
     </Grid>

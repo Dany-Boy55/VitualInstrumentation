@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Timers;
 using DataPlotter;
 using DAQDevices;
 using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Net.Sockets;
 
 namespace CoolingTower
 {
@@ -25,10 +16,16 @@ namespace CoolingTower
     public partial class MainWindow : Window
     {
         private ESPWiFi adquisitionDevice;
-        private static IPAddress defaultIp = new IPAddress(new byte[]{192,168,100,100});
+        private static IPAddress defaultIp = new IPAddress(new byte[] { 192, 168, 100, 100 });
         private double[] variables = new double[8];
+        double area = 0.5;
+        double airVolumeFlow = 50;
+        double airGasConst = 0.2870;
+        double airmassflow = 0.0083;
+        double airSpeficiHeat = 1.005;
+        double qWaterLost;
         int samples;
-
+    
         public MainWindow()
         {
             InitializeComponent();
@@ -89,16 +86,38 @@ namespace CoolingTower
                             break;
                         default:
                             break;
-                    }
+                    }                    
                 }
                 catch (Exception)
                 {
                     
                 }
             }
+            airmassflow = AirMassFlow(variables[7], variables[2], airGasConst, variables[3]);
+            airflowgauge.Value = airmassflow;
+            airflowGraph.AddNewDataPoint(samples, airmassflow);
+            qWaterLost = HeatLostByWater(variables[2], airSpeficiHeat, variables[4], variables[3] );
+            qlostgauge.Value = qWaterLost;
+            qlostGraph.AddNewDataPoint(samples, qWaterLost);
         }
         
+        /// <summary>
+        /// Calculates the air mass flow
+        /// </summary>
+        /// <returns></returns>
+        private double AirMassFlow(double pressure, double voluFlow, double gasconst, double tempin)
+        {
+            return pressure * voluFlow / (gasconst * tempin);
+        }
         
+        /// <summary>
+        /// Calculates the heat that the water lost
+        /// </summary>
+        private double HeatLostByWater(double waterflow, double cpAir, double airtempin, double airtempout)
+        {
+            return waterflow * cpAir * (airtempout - airtempin);
+        }
+
         /// <summary>
         /// Change the content that the user can interact with
         /// </summary>
@@ -161,11 +180,6 @@ namespace CoolingTower
                     ipTextbox.IsEnabled = false;
                     statusBar.Foreground = new SolidColorBrush(Colors.Yellow);
                     adquisitionDevice.StartConnection();
-                    while(!adquisitionDevice.IsConnected){ }
-                    this.Cursor = null;
-                    statusBar.Foreground = new SolidColorBrush(Colors.DodgerBlue);
-                    statusText.Text = "Conectado: Sin Datos";
-                    (sender as Button).Content = "Detener Conexion";
                 }
                 catch (FormatException)
                 {
@@ -176,6 +190,29 @@ namespace CoolingTower
                 catch (InvalidOperationException)
                 {
                     MessageBox.Show("Error al abrir la conexion TCP espeficicada");
+                }
+                catch (SocketException)
+                {
+                    MessageBox.Show("Error al abrir la conexion, revise la direccion y/o el puerto");
+                }
+                finally
+                {
+                    this.Cursor = null;
+                    if (adquisitionDevice.IsConnected)
+                    {
+                        statusBar.Foreground = new SolidColorBrush(Colors.DodgerBlue);
+                        statusText.Text = "Conectado: Sin Datos";
+                        (sender as Button).Content = "Detener Conexion";
+                    }
+                    else
+                    {
+                        this.Cursor = null;
+                        statusBar.Foreground = new SolidColorBrush(Colors.Red);
+                        statusText.Text = "Desconectado";
+                        (sender as Button).Content = "Establecer Conexion";
+                        portTextbox.IsEnabled = true;
+                        ipTextbox.IsEnabled = true;
+                    }
                 }
             }
             else
@@ -189,6 +226,7 @@ namespace CoolingTower
             }
         }
 
+
         /// <summary>
         /// Errases all the content in the plots
         /// </summary>
@@ -198,6 +236,58 @@ namespace CoolingTower
             foreach (var item in graphContainer.Children)
             {
                 (item as BasicGraph).ClearPlot();
+            }
+        }
+
+        private void airFlow_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                airVolumeFlow = double.Parse((sender as TextBox).Text) / 3_600_000;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Por favor indique números");
+                (sender as TextBox).Text = "50";
+            }
+        }
+
+        private void airArea_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                area = double.Parse((sender as TextBox).Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Por favor indique números");
+                (sender as TextBox).Text = "0.5";
+            }
+        }
+
+        private void airRsust_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                airGasConst = double.Parse((sender as TextBox).Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Por favor indique números");
+                (sender as TextBox).Text = "0.2870";
+            }
+        }
+
+        private void airCp_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                airSpeficiHeat = double.Parse((sender as TextBox).Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Por favor indique números");
+                (sender as TextBox).Text = "1.005";
             }
         }
     }
